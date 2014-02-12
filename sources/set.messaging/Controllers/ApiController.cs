@@ -32,8 +32,7 @@ namespace set.messaging.Controllers
 
             var response = await _messageService.SendEmail(to, subject, htmlBody);
 
-
-            return Json(response, JsonRequestBehavior.DenyGet);
+            return Json(new { response.HttpStatusCode, response.MessageId, response.ContentLength }, JsonRequestBehavior.DenyGet);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

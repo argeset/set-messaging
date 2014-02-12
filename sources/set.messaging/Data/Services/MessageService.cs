@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
-
+using Amazon;
+using Amazon.IdentityManagement.Model;
+using Amazon.Runtime;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 
@@ -21,8 +24,8 @@ namespace set.messaging.Data.Services
 
             var destination = new Destination { ToAddresses = new List<string> { to } };
 
-            var contentSubject = new Content { Charset = Encoding.UTF8.EncodingName, Data = subject };
-            var contentBody = new Content { Charset = Encoding.UTF8.EncodingName, Data = htmlBody };
+            var contentSubject = new Content { Charset = "UTF-8", Data = subject };
+            var contentBody = new Content { Charset = "UTF-8", Data = htmlBody };
             var body = new Body { Html = contentBody };
 
             var message = new Message { Body = body, Subject = contentSubject };
@@ -34,7 +37,10 @@ namespace set.messaging.Data.Services
                 Message = message
             };
 
-            var client = new AmazonSimpleEmailServiceClient();
+            var accessKeyId = ConfigurationManager.AppSettings["AccessKeyID"] ?? string.Empty;
+            var secretAccessKey = ConfigurationManager.AppSettings["SecretAccessKey"] ?? string.Empty;
+            
+            var client = new AmazonSimpleEmailServiceClient(accessKeyId, secretAccessKey, RegionEndpoint.EUWest1);
 
             var response = client.SendEmail(request);
 

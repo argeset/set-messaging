@@ -1,23 +1,21 @@
 ﻿@model AppModel
 
-@{
-    ViewBag.Title = string.Format("{0} - {1}", Html.LocalizationString("user_apps_title"), Model.Name);
-}
-
-<h3>@ViewBag.Title</h3>
+<h3>@Model.Name</h3>
 <hr />
 <p>
     @Model.Description
 </p>
+
 @if (Model.IsActive)
 {
     <button id="btnNewToken" name="btnNewToken" class="btn btn-sm btn-primary pull-right" data-id="@Model.Id">@Html.LocalizationString("btn_create_new_token")</button>
     <br /><br />
     @Html.AntiForgeryToken()
 }
+
 <div class="table-responsive">
     <table class="table table-bordered table-hover">
-        <thead>
+        <thead style="color: #ebebeb; background-color: #5bc0de;font-size: larger">
             <tr>
                 @if (ViewBag.IsActive)
                 {
@@ -83,7 +81,7 @@
                 $(textBtn).data(textId, id).data(textIsActive, isActive);
             });
 
-            var fnBtnActionClick = function() {
+            var fnBtnActionClick = function () {
                 var textBtn = "button#btnDelete";
 
                 var id = $(this).data(textId);
@@ -93,7 +91,7 @@
             };
 
             $("button.btnAct").click(fnBtnActionClick);
-            $("button#btnDelete").click(function() {
+            $("button#btnDelete").click(function () {
                 var token = $(this).data("id");
 
                 $.ajax({
@@ -111,7 +109,7 @@
                 });
             });
 
-            $("button#btnNewToken").click(function() {
+            $("button#btnNewToken").click(function () {
                 var appId = $(this).data("id");
                 $("button#btnNewToken").data("id", appId);
 
