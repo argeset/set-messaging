@@ -121,6 +121,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\App\List.cshtml" />
     <Content Include="Views\Shared\_Msg.cshtml" />
+    <None Include="Properties\PublishProfiles\dropbox.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
