@@ -53,7 +53,11 @@ namespace set.messaging.Configurations
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<IMessageService>().ImplementedBy<MessageService>().LifestylePerWebRequest());
+            container.Register(
+                Component.For<IFormsAuthenticationService>().ImplementedBy<FormsAuthenticationService>().LifestylePerWebRequest(),
+                Component.For<IUserService>().ImplementedBy<UserService>().LifestylePerWebRequest(),
+                Component.For<IAppService>().ImplementedBy<AppService>().LifestylePerWebRequest(),
+                Component.For<IMessageService>().ImplementedBy<MessageService>().LifestylePerWebRequest());
         }
     }
 }

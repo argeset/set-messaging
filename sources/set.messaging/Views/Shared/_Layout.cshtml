@@ -5,8 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Set Messaging</title>
     <link rel="shortcut icon" href="/public/img/favicon.ico" />
+    <link rel="stylesheet" href="//s.setcrm.com/css/boot.css?v=1" />
+    <link rel="stylesheet" href="/public/css/app.css?v=1" />
+    @RenderSection("Css", false)
 </head>
 <body>
-    @RenderBody()
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            <a class="navbar-brand" href="/">Set Messaging</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Html.LocalizationString("apps") <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/app/list">@Html.LocalizationString("menu_app_list")</a></li>
+                            <li><a href="/app/new">@Html.LocalizationString("menu_app_new")</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            @User.Identity.GetFullName() <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/logout">@Html.LocalizationString("logout")</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li><a href="/user/login">@Html.LocalizationString("login")</a></li>
+                }
+
+            </ul>
+        </div><!-- /.nav-collapse -->
+    </div>
+    <div style="padding: 3px;">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            @RenderBody()
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="clearfix"></div>
+        <footer style="padding: 3px;"><hr /><p>&copy; Argeset Yazılım</p></footer>
+    </div>
+
+    <script src="//s.setcrm.com/js/jquery.2.1.0.js"></script>
+    <script src="//s.setcrm.com/js/bootstrap.3.0.3.js"></script>
+    <script src="/public/js/app.js?v=2"></script>
+    @RenderSection("Script", false)
+
 </body>
 </html>

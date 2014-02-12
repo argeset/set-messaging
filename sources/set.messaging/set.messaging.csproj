@@ -41,11 +41,20 @@
     <Reference Include="AWSSDK">
       <HintPath>..\packages\AWSSDK.2.0.8.2\lib\net45\AWSSDK.dll</HintPath>
     </Reference>
+    <Reference Include="BCrypt.Net">
+      <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.2.1\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -94,11 +103,20 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LICENSE.txt" />
     <Content Include="packages.config" />
+    <Content Include="Public\css\app.css" />
+    <Content Include="Public\js\app.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\App\Detail.cshtml" />
+    <Content Include="Views\App\Index.cshtml" />
+    <Content Include="Views\App\New.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\App\List.cshtml" />
+    <Content Include="Views\Shared\_Msg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -116,17 +134,40 @@
     <Compile Include="Configurations\IocConfig.cs" />
     <Compile Include="Configurations\RouteConfig.cs" />
     <Compile Include="Controllers\ApiController.cs" />
+    <Compile Include="Controllers\AppController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Data\Entities\App.cs" />
+    <Compile Include="Data\Entities\BaseEntity.cs" />
+    <Compile Include="Data\Entities\PagedList.cs" />
+    <Compile Include="Data\Entities\RequestLog.cs" />
+    <Compile Include="Data\Entities\Token.cs" />
+    <Compile Include="Data\Entities\User.cs" />
+    <Compile Include="Data\Services\AppService.cs" />
+    <Compile Include="Data\Services\BaseService.cs" />
+    <Compile Include="Data\Services\FormsAuthenticationService.cs" />
     <Compile Include="Data\Services\MessageService.cs" />
+    <Compile Include="Data\Services\UserService.cs" />
+    <Compile Include="Data\SetMetaDbContext.cs" />
+    <Compile Include="Data\SetMetaDbInitializer.cs" />
+    <Compile Include="Data\SetMetaDbMigrationConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConstHelper.cs" />
+    <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="Models\AppModel.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PageModel.cs" />
+    <Compile Include="Models\TokenModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Entities\" />
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

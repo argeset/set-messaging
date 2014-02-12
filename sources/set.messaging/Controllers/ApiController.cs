@@ -7,12 +7,16 @@ using set.messaging.Helpers;
 
 namespace set.messaging.Controllers
 {
-    public class ApiController : Controller
+    public class ApiController : BaseController
     {
+        private readonly IAppService _appService;
         private readonly IMessageService _messageService;
 
-        public ApiController(IMessageService messageService)
+        public ApiController(
+            IAppService appService,
+            IMessageService messageService)
         {
+            _appService = appService;
             _messageService = messageService;
         }
 
@@ -23,7 +27,7 @@ namespace set.messaging.Controllers
                 || string.IsNullOrWhiteSpace(subject)
                 || string.IsNullOrWhiteSpace(htmlBody))
             {
-                throw new HttpException(400, "not valid request");
+                throw new HttpException(400, "not valid");
             }
 
             var response = await _messageService.SendEmail(to, subject, htmlBody);
@@ -42,16 +46,16 @@ namespace set.messaging.Controllers
             var token = authHeader;
             if (string.IsNullOrWhiteSpace(token)) ReturnNotAuthenticated(filterContext);
 
-            //var isTokenValidTask = _appService.IsTokenValid(token);
-            //isTokenValidTask.Wait();
+            var isTokenValidTask = _appService.IsTokenValid(token);
+            isTokenValidTask.Wait();
 
-            //if (!isTokenValidTask.Result) ReturnNotAuthenticated(filterContext);
+            if (!isTokenValidTask.Result) ReturnNotAuthenticated(filterContext);
 
-            //try
-            //{
-            //    _appService.LogRequest(token, Request.UserHostAddress, Request.Url.AbsolutePath);
-            //}
-            //catch { }
+            try
+            {
+                _appService.LogRequest(token, Request.UserHostAddress, Request.Url.AbsolutePath);
+            }
+            catch { }
 
             base.OnActionExecuting(filterContext);
         }

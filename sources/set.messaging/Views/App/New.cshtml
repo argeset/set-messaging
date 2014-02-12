@@ -1,0 +1,37 @@
+﻿@model AppModel
+
+@{
+    ViewBag.Title = Html.LocalizationString("new_app_title");
+}
+
+<div class=" col-lg-5">
+    <h3>@ViewBag.Title</h3>
+    <hr />
+
+    <form id="frm" name="frm" action="/app/new" method="post">
+        <div class="col-lg-12">
+            <span>@Html.LocalizationString("app_name")</span>
+            <input type="text" class="form-control input-lg" name="name" id="name" value="@Model.Name" required />
+        </div>
+
+        <div class="col-lg-12">
+            <span>@Html.LocalizationString("url")</span>
+            <input type="text" class="form-control input-lg" name="url" id="url" value="@Model.Url" required />
+        </div>
+
+        <div class="col-lg-12">
+            <span>@Html.LocalizationString("description")</span>
+            <input type="text" class="form-control input-lg" name="description" id="description" value="@Model.Description" />
+        </div>
+
+        @Html.AntiForgeryToken()
+
+        <div class="col-lg-12">
+            <input type="submit" value="@Html.LocalizationString("btn_save")" class="btn btn-success btn-lg" />
+        </div>
+
+        <div class="error">
+            @Model.Msg
+        </div>
+    </form>
+</div>

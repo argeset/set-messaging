@@ -1,0 +1,11 @@
+﻿@if (Model != null 
+     && !string.IsNullOrWhiteSpace(Model.Msg))
+{
+    var cssClass = Model.IsOk ? "success" : "danger";
+    <div class="col-lg-12">
+        <div class="alert alert-@cssClass alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <span>@Model.Msg</span>
+        </div>
+    </div>
+}

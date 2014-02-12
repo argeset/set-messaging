@@ -1,0 +1,55 @@
+﻿@model PageModel<AppModel>
+
+@{
+    ViewBag.Title = Html.LocalizationString("apps_list_title");
+}
+
+<h3>@ViewBag.Title</h3>
+<hr />
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>@Html.LocalizationString("app_name")</th>
+                <th>@Html.LocalizationString("description")</th>
+                <th>@Html.LocalizationString("url")</th>
+                <th>@Html.LocalizationString("usage_count")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {                
+                <tr>
+                    <td><a href="/app/detail/@item.Id">@item.Name</a></td>
+                    <td>@item.Description</td>
+                    <td><a href="@item.Url">@item.Url</a></td>
+                    <td>@item.UsageCount</td>
+                </tr>
+            }
+            @{
+                if (Model.PageCount > 1)
+                {
+                    <tr>
+                        <td colspan="6" align="center">
+                            <ul class="pagination">
+                                @if (Model.HasPrevPage)
+                                {
+                                    <li><a href="/app/list/@(Model.PageNumber - 1)">&laquo;</a></li>
+                                }
+                                <li><a href="/app/list/@(Model.PageNumber)">@(Model.PageNumber)</a></li>
+                                @if (Model.HasNextPage)
+                                {
+                                    <li><a href="/app/list/@(Model.PageNumber + 1)">&raquo;</a></li>
+                                }
+                            </ul>
+                            <br />
+                            <span class="label label-primary">@Html.LocalizationString("total_page_count") : @Model.PageCount</span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

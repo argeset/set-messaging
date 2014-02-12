@@ -1,0 +1,162 @@
+﻿@model AppModel
+
+@{
+    ViewBag.Title = string.Format("{0} - {1}", Html.LocalizationString("user_apps_title"), Model.Name);
+}
+
+<h3>@ViewBag.Title</h3>
+<hr />
+<p>
+    @Model.Description
+</p>
+@if (Model.IsActive)
+{
+    <button id="btnNewToken" name="btnNewToken" class="btn btn-sm btn-primary pull-right" data-id="@Model.Id">@Html.LocalizationString("btn_create_new_token")</button>
+    <br /><br />
+    @Html.AntiForgeryToken()
+}
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                @if (ViewBag.IsActive)
+                {
+                    <th></th>
+                }
+                <th>@Html.LocalizationString("token")</th>
+                <th>@Html.LocalizationString("creation_date")</th>
+                <th>@Html.LocalizationString("usage_count")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tokens)
+            {
+                <tr>
+                    @if (ViewBag.IsActive)
+                    {
+                        <td>
+                            <button class="btn btn-sm btn-warning btnAct" data-toggle="modal" data-target="#DeleteModal" data-id="@item.Token">@Html.LocalizationString("btn_delete")</button>
+                        </td>
+                    }
+                    <td>@item.Token</td>
+                    <td>@item.CreationDate.ToString("f")</td>
+                    <td>@item.UsageCount</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="lblDeleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">@Html.LocalizationString("modal_title_delete_token")</h4>
+            </div>
+            <div class="modal-body">
+                @Html.LocalizationString("modal_body_delete_token")
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal">@Html.LocalizationString("btn_cancel")</button>
+                <button class="btn btn-success" id="btnDelete" name="btnDelete" data-id="">@Html.LocalizationString("btn_save")</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section script
+{
+    <script>
+        $(function () {
+            var textId = "id";
+            var textIsActive = "isactive";
+
+            $("button.btnAction").click(function () {
+                var textBtn = "button#btnModalAction";
+
+                var id = $(this).data(textId);
+                var isActive = $(this).data(textIsActive);
+
+                $(textBtn).data(textId, id).data(textIsActive, isActive);
+            });
+
+            var fnBtnActionClick = function() {
+                var textBtn = "button#btnDelete";
+
+                var id = $(this).data(textId);
+                var isActive = $(this).data(textIsActive);
+
+                $(textBtn).data(textId, id).data(textIsActive, isActive);
+            };
+
+            $("button.btnAct").click(fnBtnActionClick);
+            $("button#btnDelete").click(function() {
+                var token = $(this).data("id");
+
+                $.ajax({
+                    url: "/App/DeleteToken",
+                    type: "POST",
+                    data: "token=" + token + "&__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val(),
+                    success: function (r) {
+                        if (r && r.IsOk) {
+                            $("button[data-id='" + token + "']").parent().parent().remove();
+                            $("#DeleteModal").modal('hide');
+                        } else {
+                            //warning
+                        }
+                    }
+                });
+            });
+
+            $("button#btnNewToken").click(function() {
+                var appId = $(this).data("id");
+                $("button#btnNewToken").data("id", appId);
+
+                $.ajax({
+                    url: "/App/NewToken",
+                    type: "POST",
+                    data: "id=" + appId + "&__RequestVerificationToken=" + $('input[name="__RequestVerificationToken"]').val(),
+                    success: function (r) {
+                        if (r && r.IsOk) {
+
+                            var token = r.Token;
+
+                            var row = $("<tr />");
+                            var url = "#DeleteModal";
+                            var aDeleteButton = $("<button />");
+
+                            aDeleteButton.addClass("btn btn-sm btn-warning btnAct");
+                            aDeleteButton.attr("data-toggle", "modal");
+                            aDeleteButton.attr("data-id", token);
+                            aDeleteButton.attr("data-target", url);
+                            aDeleteButton.html('@Html.LocalizationString("btn_delete")');
+                            aDeleteButton.click(fnBtnActionClick);
+
+                            var tdDeleteButton = $("<td />");
+                            tdDeleteButton.append(aDeleteButton);
+                            row.append(tdDeleteButton);
+
+                            var tdToken = $("<td />");
+                            tdToken.html(token);
+                            row.append(tdToken);
+                            var tdCreationDateStr = $("<td />");
+                            tdCreationDateStr.html(r.CreationDateStr);
+                            row.append(tdCreationDateStr);
+
+                            var tdUsageCount = $("<td />");
+                            tdUsageCount.html(r.UsageCount);
+                            row.append(tdUsageCount);
+
+                            $('table tbody').append(row);
+                        } else {
+                            //warning
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

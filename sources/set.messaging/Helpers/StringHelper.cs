@@ -1,12 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web;
+using System.Web.Mvc;
 
 namespace set.messaging.Helpers
 {
     public static class StringHelper
     {
+        public static string LocalizationString(this HtmlHelper helper, string key)
+        {
+            try
+            {
+                return ((Dictionary<string, string>)HttpContext.Current.Application[Thread.CurrentThread.CurrentUICulture.Name])[key];
+            }
+            catch { return key; }
+        }
+
         public static string ToNoDashString(this Guid guid)
         {
             return guid.ToString().Replace("-", string.Empty);
