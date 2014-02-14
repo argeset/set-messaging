@@ -24,22 +24,22 @@ namespace set.messaging.Data
 
             context.SaveChanges();
 
-            AddApp(context, "SetWeb", string.Empty);
-            AddApp(context, "SetLocale", "locale.setcrm.com");
-            AddApp(context, "SetMeta", "meta.setcrm.com");
-            AddApp(context, "SetCrm", "setcrm.com");
+            AddApp(context, "Set Crm", "the main crm app", "setcrm.com");
+            AddApp(context, "Set Locale", "localization management app", "locale.setcrm.com");
+            AddApp(context, "Set Messaging", "message sending app", "msg.setcrm.com");
 
             context.SaveChanges();
         }
 
-        private static void AddApp(SetMessagingDBContext context, string appName, string url)
+        private static void AddApp(SetMessagingDBContext context, string appName, string description, string url)
         {
             var user = context.Users.First();
-            
+
             var app = new App
             {
                 UserId = user.Id,
                 Name = appName,
+                Description = description,
                 Url = url,
                 CreatedBy = user.Id,
 
@@ -70,6 +70,7 @@ namespace set.messaging.Data
                 LastLoginAt = DateTime.Now,
                 Language = ConstHelper.CultureNameEN
             };
+
             context.Users.Add(user);
         }
     }

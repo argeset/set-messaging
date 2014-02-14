@@ -30,9 +30,7 @@ namespace set.messaging.Configurations
         {
             if (controllerType == null)
             {
-                throw new HttpException(404,
-                    string.Format("The controller for path '{0}' could not be found.",
-                        requestContext.HttpContext.Request.Path));
+                throw new HttpException(404, string.Format("The controller for path '{0}' could not be found.", requestContext.HttpContext.Request.Path));
             }
 
             return (IController)_kernel.Resolve(controllerType);
@@ -55,6 +53,7 @@ namespace set.messaging.Configurations
         {
             container.Register(
                 Component.For<IFormsAuthenticationService>().ImplementedBy<FormsAuthenticationService>().LifestylePerWebRequest(),
+
                 Component.For<IUserService>().ImplementedBy<UserService>().LifestylePerWebRequest(),
                 Component.For<IAppService>().ImplementedBy<AppService>().LifestylePerWebRequest(),
                 Component.For<IMessageService>().ImplementedBy<MessageService>().LifestylePerWebRequest());

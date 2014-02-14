@@ -107,7 +107,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LICENSE.txt" />
     <Content Include="packages.config" />
     <Content Include="Public\css\app.css" />
     <Content Include="Public\js\app.js" />
