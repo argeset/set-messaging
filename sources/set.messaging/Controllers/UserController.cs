@@ -2,20 +2,21 @@
 using System.Web.Mvc;
 
 using set.messaging.Data.Services;
+using set.messaging.Helpers;
 using set.messaging.Models;
 
 namespace set.messaging.Controllers
 {
     public class UserController : BaseController
     {
-        private readonly IFormsAuthenticationService _formsAuthenticationService;
+        private readonly IAuthService _authService;
         private readonly IUserService _userService;
 
         public UserController(
-            IFormsAuthenticationService formsAuthenticationService,
+            IAuthService authService,
             IUserService userService)
         {
-            _formsAuthenticationService = formsAuthenticationService;
+            _authService = authService;
             _userService = userService;
         }
 
@@ -49,15 +50,77 @@ namespace set.messaging.Controllers
                 return View(model);
             }
 
-            _formsAuthenticationService.SignIn(user.Id, user.Name, user.Email, user.RoleName, true);
+            _authService.SignIn(user.Id, user.Name, user.Email, user.RoleName, true);
 
             return Redirect(!string.IsNullOrEmpty(model.ReturnUrl) ? model.ReturnUrl : "/app/list");
+        }
+
+
+        [HttpGet, AllowAnonymous]
+        public ActionResult PasswordReset()
+        {
+            var model = new PasswordResetModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                model.Email = User.Identity.GetEmail();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
+        public async Task<ActionResult> PasswordReset(PasswordResetModel model)
+        {
+            SetPleaseTryAgain(model);
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            var isOk = await _userService.RequestPasswordReset(model.Email);
+            if (isOk)
+            {
+                model.Msg = "password_reset_request_successful".Localize();
+            }
+
+            return View(model);
+        }
+
+        [HttpGet, AllowAnonymous]
+        public async Task<ActionResult> PasswordChange(string email, string token)
+        {
+            var model = new PasswordChangeModel { Email = email, Token = token };
+
+            if (!await _userService.IsPasswordResetRequestValid(model.Email, model.Token))
+            {
+                return Redirect("/User/Login");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost, AllowAnonymous]
+        public async Task<ActionResult> PasswordChange(PasswordChangeModel model)
+        {
+            SetPleaseTryAgain(model);
+            if (model.IsNotValid())
+            {
+                return View(model);
+            }
+
+            if (!await _userService.ChangePassword(model.Email, model.Token, model.Password))
+            {
+                return View(model);
+            }
+
+            return Redirect("/User/Login");
         }
 
         [HttpGet]
         public ActionResult Logout()
         {
-            _formsAuthenticationService.SignOut();
+            _authService.SignOut();
             return RedirectToHome();
         }
     }

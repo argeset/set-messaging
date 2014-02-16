@@ -2,7 +2,7 @@
 
 namespace set.messaging.Data.Services
 {
-    public class FormsAuthenticationService : IFormsAuthenticationService
+    public class AuthService : IAuthService
     {
         public void SignIn(string id, string name, string email, string roleName, bool createPersistentCookie)
         {
@@ -15,7 +15,7 @@ namespace set.messaging.Data.Services
         }
     }
 
-    public interface IFormsAuthenticationService
+    public interface IAuthService
     {
         void SignIn(string id, string name, string email, string roleName, bool createPersistentCookie);
 

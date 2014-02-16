@@ -11,7 +11,6 @@ using set.messaging.Helpers;
 
 namespace set.messaging.Data.Services
 {
-
     public class MessageService : IMessageService
     {
         private const string FROM_EMAIL = "info@setcrm.com";

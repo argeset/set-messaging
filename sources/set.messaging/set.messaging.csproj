@@ -115,12 +115,13 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\App\Detail.cshtml" />
-    <Content Include="Views\App\Index.cshtml" />
     <Content Include="Views\App\New.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\App\List.cshtml" />
     <Content Include="Views\Shared\_Msg.cshtml" />
     <None Include="Properties\PublishProfiles\dropbox.pubxml" />
+    <Content Include="Views\User\PasswordChange.cshtml" />
+    <Content Include="Views\User\PasswordReset.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -167,6 +168,8 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\NameValue.cs" />
     <Compile Include="Models\PageModel.cs" />
+    <Compile Include="Models\PasswordChangeModel.cs" />
+    <Compile Include="Models\PasswordResetModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

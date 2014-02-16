@@ -4,9 +4,9 @@ namespace set.messaging.Data.Services
 {
     public class BaseService
     {
-        public readonly DbContext Context;
+        public readonly SetMessagingDBContext Context;
 
-        public BaseService(DbContext context = null)
+        public BaseService(SetMessagingDBContext context = null)
         {
             if (context == null)
             {

@@ -20,6 +20,15 @@ namespace set.messaging.Helpers
             catch { return key; }
         }
 
+        public static string Localize(this string key)
+        {
+            try
+            {
+                return ((Dictionary<string, string>)HttpContext.Current.Application[Thread.CurrentThread.CurrentUICulture.Name])[key];
+            }
+            catch { return key; }
+        }
+
         public static string ToNoDashString(this Guid guid)
         {
             return guid.ToString().Replace("-", string.Empty);
