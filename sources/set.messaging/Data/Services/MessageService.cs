@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 using System.Threading.Tasks;
+
 using Amazon;
-using Amazon.IdentityManagement.Model;
-using Amazon.Runtime;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 

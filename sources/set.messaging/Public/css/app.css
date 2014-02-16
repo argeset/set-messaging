@@ -11,3 +11,8 @@
     padding-left:10px;
     padding-right:10px;
 }
+
+.table thead {
+    background: #5BC0DE;
+    font-weight: bold;
+}

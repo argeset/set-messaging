@@ -20,7 +20,7 @@ namespace set.messaging.Controllers
             _messageService = messageService;
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public async Task<JsonResult> SendMail(string to, string subject, string htmlBody)
         {
             if (!to.IsEmail()
@@ -62,7 +62,7 @@ namespace set.messaging.Controllers
         private static void ReturnNotAuthenticated(ControllerContext filterContext)
         {
             filterContext.RequestContext.HttpContext.Response.Clear();
-            filterContext.RequestContext.HttpContext.Response.Write("your request is not authenticated with valid token!<br/>");
+            filterContext.RequestContext.HttpContext.Response.Write("your request is not authenticated with valid token!");
             filterContext.RequestContext.HttpContext.Response.End();
         }
     }
