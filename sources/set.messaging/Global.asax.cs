@@ -36,10 +36,13 @@ namespace set.messaging
         {
             var enTexts = new Dictionary<string, string>();
 
+            var localeKey = ConfigurationManager.AppSettings[ConstHelper.LocaleApiKey];
+            if (string.IsNullOrWhiteSpace(localeKey)) return;
+            
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ConstHelper.MediaTypeJson));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(ConfigurationManager.AppSettings[ConstHelper.LocaleApiKey]);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(localeKey);
                 
                 SetLocalizationStringsDictionary(client, enTexts, ConstHelper.en);
             }

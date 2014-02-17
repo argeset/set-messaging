@@ -26,6 +26,17 @@ namespace set.messaging.test.Shared
         {
             AssertAttribute(controller, actionMethodName, typeof(AllowAnonymousAttribute), parameterTypes);
         }
+
+        public static void AssertValidateInputAttribute(this Controller controller, string actionMethodName, Type[] parameterTypes = null)
+        {
+            var attribute = typeof (ValidateInputAttribute);
+
+            var type = controller.GetType();
+            var methodInfo = type.GetMethod(actionMethodName, parameterTypes ?? new Type[0]);
+            var attributes = methodInfo.GetCustomAttributes(attribute, true);
+
+            Assert.IsTrue(attributes.Any(), string.Format("{0} not found on action {1}", attribute.Name, actionMethodName));
+        }
          
         public static void AssertPostAttribute(this Controller controller, string actionMethodName, Type[] parameterTypes = null)
         {

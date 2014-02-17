@@ -21,7 +21,7 @@ namespace set.messaging.Controllers
         }
 
         [HttpPost, ValidateInput(false)]
-        public async Task<JsonResult> SendMail(string to, string subject, string htmlBody)
+        public async Task<JsonResult> SendEmail(string to, string subject, string htmlBody)
         {
             if (!to.IsEmail()
                 || string.IsNullOrWhiteSpace(subject)

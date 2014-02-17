@@ -12,7 +12,7 @@
 <hr />
 <br />
 <pre>
-POST /api/sendmail?to=hi@@example.com&subject=hi&htmlBody=message HTTP/1.1
+POST /api/sendemail?to=hi@@example.com&subject=hi&htmlBody=message HTTP/1.1
 Host: msg.setcrm.com
 Authorization: {your-token}
 Cache-Control: no-cache  
@@ -23,13 +23,14 @@ using (var client = new HttpClient())
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("a01b37988f914b35bb09eb229918135a");
     client.BaseAddress = new Uri("http://msg.setcrm.com/");
+
     var content = new FormUrlEncodedContent(new[]
     {
         new KeyValuePair&lt;string, string&gt;("to", "sample@mail.com"),
         new KeyValuePair&lt;string, string&gt;("subject", "test"),
         new KeyValuePair&lt;string, string&gt;("htmlBody", "&lt;html&gt;&lt;body&gt;test mesage&lt;/body&gt;&lt;/html&gt;")
     });
-    var result = client.PostAsync("/Api/SendMail", content).Result;
+    var result = client.PostAsync("/Api/SendEmail", content).Result;
     var resultContent = result.Content.ReadAsStringAsync().Result;
 }
 </pre>
