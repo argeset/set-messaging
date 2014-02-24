@@ -33,7 +33,7 @@
                     @if (ViewBag.IsActive)
                     {
                         <td>
-                            <button class="btn btn-sm btn-warning btnAct" data-toggle="modal" data-target="#DeleteModal" data-id="@item.Token">@Html.LocalizationString("btn_delete")</button>
+                            <button class="btn btn-sm btn-danger btnAct" data-toggle="modal" data-target="#DeleteModal" data-id="@item.Token">@Html.LocalizationString("btn_delete")</button>
                         </td>
                     }
                     <td>@item.Token</td>
@@ -126,7 +126,7 @@
                             var url = "#DeleteModal";
                             var aDeleteButton = $("<button />");
 
-                            aDeleteButton.addClass("btn btn-sm btn-warning btnAct");
+                            aDeleteButton.addClass("btn btn-sm btn-danger btnAct");
                             aDeleteButton.attr("data-toggle", "modal");
                             aDeleteButton.attr("data-id", token);
                             aDeleteButton.attr("data-target", url);
