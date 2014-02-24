@@ -20,7 +20,7 @@ namespace set.messaging.Controllers
             _messageService = messageService;
         }
 
-        [HttpPost, ValidateInput(false)]
+        [AllowAnonymous, HttpPost, ValidateInput(false)]
         public async Task<JsonResult> SendEmail(string to, string subject, string htmlBody)
         {
             if (!to.IsEmail()
