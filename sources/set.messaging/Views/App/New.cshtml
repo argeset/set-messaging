@@ -4,34 +4,65 @@
     ViewBag.Title = Html.LocalizationString("new_app_title");
 }
 
-<div class=" col-lg-5">
-    <h3>@ViewBag.Title</h3>
-    <hr />
+@Html.Partial("_Msg")
 
-    <form id="frm" name="frm" action="/app/new" method="post">
-        <div class="col-lg-12">
-            <span>@Html.LocalizationString("app_name")</span>
-            <input type="text" class="form-control input-lg" name="Name" id="Name" value="@Model.Name" required />
-        </div>
+<div class="row">
 
-        <div class="col-lg-12">
-            <span>@Html.LocalizationString("url")</span>
-            <input type="text" class="form-control input-lg" name="Url" id="Url" value="@Model.Url" required />
-        </div>
+    <div class=" col-lg-5">
+        <h3>@ViewBag.Title</h3>
+        <hr />
 
-        <div class="col-lg-12">
-            <span>@Html.LocalizationString("description")</span>
-            <input type="text" class="form-control input-lg" name="Description" id="Description" value="@Model.Description" />
-        </div>
+        <form method="post">
+            <div class="form-group">
+                <label for="Name">@Html.LocalizationString("app_name")</label>
+                <input id="Name" name="Name" type="text" class="form-control" value="@Model.Name" required />
+                <div id="name_previously_used"></div>
+            </div>
 
-        @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label for="Url">@Html.LocalizationString("url")</label>
+                <input type="text" class="form-control" name="Url" id="Url" value="@Model.Url" required />
+            </div>
 
-        <div class="col-lg-12">
+            <div class="form-group">
+                <label for="Description">@Html.LocalizationString("description")</label>
+                <input type="text" class="form-control" name="Description" id="Description" value="@Model.Description" />
+            </div>
+
+            @Html.AntiForgeryToken()
+
             <input type="submit" value="@Html.LocalizationString("btn_save")" class="btn btn-success" />
-        </div>
 
-        <div class="error">
-            @Model.Msg
-        </div>
-    </form>
+        </form>
+    </div>
+
 </div>
+
+@section Script
+{
+    <script>
+        $(function () {
+            $('#Name').blur(function () {
+                // loading
+                var name = $(this);
+                $.get('/app/namecontrol/', { name: name.val() }, function (result) {
+                    if (!result.IsOk) {
+                        $(':submit').prop('disabled', true);
+                        $('#name_previously_used').html('<p class="text-danger">@Html.LocalizationString("name_previously_used")</p>' +
+                                   '<p class="text-success">@Html.LocalizationString("this_name_available") <span class="label label-info" style="cursor:pointer">' + result.Msg + '</span></p>');
+
+                        $('span.label-info').click(function () {
+                            name.val($(this).html());
+                            $('#name_previously_used').html(null);
+                            $(':submit').prop('disabled', false);
+                        });
+
+                    } else {
+                        $(':submit').prop('disabled', false);
+                        $('#name_previously_used').html(null);
+                    }
+                });
+            });
+        });
+    </script>
+}
