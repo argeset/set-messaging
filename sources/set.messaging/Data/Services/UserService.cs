@@ -81,7 +81,11 @@ namespace set.messaging.Data.Services
 
             if (saved)
             {
-                _messageService.SendEmail(user.Email, "password_reset_email_subject".Localize(), string.Format("password_reset_email".Localize(), user.Email, token));
+                _messageService.SendEmail(
+                                user.Email,
+                                "password_reset_email_subject".Localize(),
+                                string.Format("password_reset_email_body".Localize(), "password_reset_email_subject".Localize(), user.Name, user.Email, token)
+                            );
             }
 
             return Task.FromResult(saved);
