@@ -126,5 +126,29 @@ namespace set.messaging.Controllers
 
             return Json(model, JsonRequestBehavior.DenyGet);
         }
+
+        [HttpGet]
+        public async Task<JsonResult> NameControl(string name)
+        {
+            var model = new ResponseModel { IsOk = true };
+            if (string.IsNullOrEmpty(name))
+            {
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+            var result = await _appService.GetByName(name);
+
+            if (result == null) return Json(model, JsonRequestBehavior.AllowGet);
+
+            while (result != null)
+            {
+                model.Msg = string.Format("{0}{1}", name, new Random().Next(1, 10));
+                result = await _appService.GetByName(model.Msg);
+            }
+
+            model.IsOk = false;
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

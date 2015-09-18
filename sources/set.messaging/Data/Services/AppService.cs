@@ -71,6 +71,16 @@ namespace set.messaging.Data.Services
             var app = Context.Set<App>().Include(x => x.Tokens).FirstOrDefault(x => x.Id == appId);
             return Task.FromResult(app);
         }
+        public Task<App> GetByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
+            var app = Context.Apps.Include(x => x.Tokens).FirstOrDefault(x => x.Name == name);
+            return Task.FromResult(app);
+        }
 
         public Task<bool> CreateToken(TokenModel model)
         {
@@ -157,6 +167,7 @@ namespace set.messaging.Data.Services
         Task<PagedList<App>> GetApps(int pageNumber);
 
         Task<App> Get(string appId);
+        Task<App> GetByName(string name);
 
         Task<bool> CreateToken(TokenModel token);
         Task<bool> DeleteToken(string token, string deletedBy);
